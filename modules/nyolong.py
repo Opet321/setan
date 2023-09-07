@@ -13,11 +13,27 @@
 ๏ **Perintah:** `curi` <balas pesan>
 ◉ **Keterangan:** Curi pap timer.
 """
-
+import glob 
+import asyncio
+import io
+import random
+import time 
 import os
 import re
-import time
 import asyncio
+
+from . import (
+    LOGS,
+    downloader,
+    eor,
+    fast_download,
+    get_all_files,
+    get_string,
+    time_formatter,
+    ayra_cmd,
+    set_attributes,
+)
+
 from datetime import datetime
 from telethon.errors.rpcerrorlist import MessageNotModifiedError
 from . import LOGS, time_formatter, downloader, random_string
@@ -139,3 +155,90 @@ async def pencuri(event):
              caption="Pap nya...")
     except Exception as e:
         print(e)
+
+@ayra_cmd(
+    pattern="ul( (.*)|$)",
+)
+async def _(event):
+    msg = await event.eor(get_string("com_1"))
+    match = event.pattern_match.group(1)
+    if match:
+        match = match.strip()
+    if not event.out and match == ".env":
+        return await event.reply("`You can't do this...`")
+    stream, force_doc, delete = (
+        False,
+        True,
+        False,
+    )
+    if "--stream" in match:
+        stream = True
+        force_doc = False
+    if "--delete" in match:
+        delete = True
+    arguments = ["--stream", "--delete"]
+    if any(item in match for item in arguments):
+        match = (
+            match.replace("--stream", "")
+            .replace("--delete", "")
+            .strip()
+        )
+    if match.endswith("/"):
+        match += "*"
+    results = glob.glob(match)
+    if not results and os.path.exists(match):
+        results = [match]
+    if not results:
+        try:
+            await event.reply(file=match)
+            return await event.try_delete()
+        except Exception as er:
+            LOGS.exception(er)
+        return await msg.eor(get_string("ls1"))
+    for result in results:
+        if os.path.isdir(result):
+            c, s = 0, 0
+            for files in get_all_files(result):
+                attributes = None
+                if stream:
+                    try:
+                        attributes = await set_attributes(files)
+                    except KeyError as er:
+                        LOGS.exception(er)
+                try:
+                    file, _ = await event.client.fast_uploader(
+                        files, show_progress=True, event=msg, to_delete=delete
+                    )
+                    await event.client.send_file(
+                        event.chat_id,
+                        file,
+#                       supports_streamin=stream,
+#                       force_document=force_doc,
+#                       thumb=None,
+#                       attributes=attributes,
+                        caption=f"",
+                        reply_to=event.reply_to_msg_id or event,
+                    )
+                    s += 1
+                except (ValueError, IsADirectoryError):
+                    c += 1
+            break
+        attributes = None
+        if stream:
+            try:
+                attributes = await set_attributes(result)
+            except KeyError as er:
+                LOGS.exception(er)
+        file, _ = await event.client.fast_uploader(
+            result, show_progress=True, event=msg, to_delete=delete
+        )
+        await event.client.send_file(
+            event.chat_id,
+            file,
+#            supports_streaming=stream,
+#            thumb=None,
+#            force_document=force_doc,
+#            attributes=attributes,
+            caption=f"",
+        )
+    await msg.try_delete()
