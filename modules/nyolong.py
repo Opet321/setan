@@ -14,6 +14,13 @@
 ◉ **Keterangan:** Curi pap timer.
 """
 
+import os
+import re
+import time
+import asyncio
+from datetime import datetime
+from telethon.errors.rpcerrorlist import MessageNotModifiedError
+from . import LOGS, time_formatter, downloader, random_string
 from telethon.errors.rpcerrorlist import ChatForwardsRestrictedError, UserBotError, MediaEmptyError
 from telethon.events import NewMessage
 from telethon.tl.custom import Dialog
@@ -49,56 +56,72 @@ from . import *
 LOG_CHANNEL = udB.get_key("LOG_CHANNEL")
 
 
+# Source: https://github.com/UsergeTeam/Userge/blob/7eef3d2bec25caa53e88144522101819cb6cb649/userge/plugins/misc/download.py#L76
+REGEXA = r"^(?:(?:https|tg):\/\/)?(?:www\.)?(?:t\.me\/|openmessage\?)(?:(?:c\/(\d+))|(\w+)|(?:user_id\=(\d+)))(?:\/|&message_id\=)(\d+)(?:\?single)?$"
+DL_DIR = "resources/downloads"
+
+
+def rnd_filename(path):
+    if not os.path.exists(path):
+        return path
+    spl = os.path.splitext(path)
+    rnd = "_" + random_string(5).lower() + "_"
+    return spl[0] + rnd + spl[1]
+
+
+
+
 @ayra_cmd(pattern="copy(?: |$)(.*)")
-async def get_restriced_msg(event):
-    match = event.pattern_match.group(1).strip()
-    if not match:
-        await event.eor("`Please provide a link!`", time=5)
-        return
-    xx = await event.eor(get_string("com_1"))
-    chat, msg = get_chat_and_msgid(match)
-    if not (chat and msg):
-        return await event.eor(
-            f"{get_string('gms_1')}!\nEg: `https://t.me/sfsdf/3 or `https://t.me/c/afdffd/3`"
-        )
+async def copy(e):
+    ghomst = await e.eor("`checking...`")
+    args = e.pattern_match.group(1)
+    if not args:
+        reply = await e.get_reply_message()
+        if reply and reply.text:
+            args = reply.message
+        else:
+            return await eod(ghomst, "Give a tg link to download", time=10)
+    
+    remgx = re.findall(REGEXA, args)
+    if not remgx:
+        return await ghomst.edit("`probably a invalid Link !?`")
+
     try:
-        message = await event.client.get_messages(chat, ids=msg)
-    except BaseException as er:
-        return await event.eor(f"**ERROR**\n`{er}`")
+        chat, id = [i for i in remgx[0] if i]
+        channel = int(chat) if chat.isdigit() else chat
+        msg_id = int(id)
+    except Exception as ex:
+        return await ghomst.edit("`Give a valid tg link to proceed`")
+
     try:
-        await event.client.send_message(event.chat_id, message)
-        await xx.try_delete()
-        return
-    except ChatForwardsRestrictedError:
-        pass
-    except MediaEmptyError:
-        pass
-    if message.media and message.document:
-        thumb = None
-        if message.document.thumbs:
-            thumb = await message.download_media(thumb=-1)
-        media, _ = await event.client.fast_downloader(
-            message.document,
-            show_progress=False,
-            event=xx,
-            message=f"Downloading {message.file.name}...",
-        )
-        await xx.edit("`Uploading...`")
-        uploaded, _ = await event.client.fast_uploader(
-            media.name, event=xx, show_progress=False, to_delete=True
-        )
-        typ = not bool(message.video)
-        await event.reply(
-            message.text,
-            file=uploaded,
-            supports_streaming=typ,
-            force_document=typ,
-            thumb=thumb,
-            attributes=message.document.attributes,
-        )
-        await xx.delete()
-        if thumb:
-            os.remove(thumb)
+        msg = await e.client.get_messages(channel, ids=msg_id)
+    except Exception as ex:
+        return await ghomst.edit(f"**Error:**  `{ex}`")
+
+    start_ = datetime.now()
+    if (msg and msg.media) and hasattr(msg.media, "photo"):
+        dls = await e.client.download_media(msg, DL_DIR)
+    elif (msg and msg.media) and hasattr(msg.media, "document"):
+        fn = msg.file.name or f"{channel}_{msg_id}{msg.file.ext}"
+        filename = rnd_filename(os.path.join(DL_DIR, fn))
+        try:
+            dlx = await downloader(
+                filename,
+                msg.document,
+                ghomst,
+                time.time(),
+                f"Downloading {filename}...",
+            )
+            dls = dlx.name
+        except MessageNotModifiedError as err:
+            LOGS.exception(err)
+            return await xx.edit(str(err))
+    else:
+        return await ghomst.edit("`Message doesn't contain any media to download.`")
+
+    end_ = datetime.now()
+    ts = time_formatter(((end_ - start_).seconds) * 1000)
+    await ghomst.edit(f"**Downloaded in {ts} !!**\n » `{dls}`")
 
 @ayra_cmd(pattern=r"curi(?: |$)(.*)")
 async def pencuri(event):
