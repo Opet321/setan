@@ -106,6 +106,7 @@ async def notes(e):
             return await something(e, msg, media, btn)
         await e.client.send_message(
             e.chat_id, msg, file=media, reply_to=e.reply_to_msg_id or e.id
+        await message.delete()
         )
 
 
