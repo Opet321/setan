@@ -770,7 +770,7 @@ async def in_pm_ans(event):
     wrns = f"{warns}/{WARNS}"
     buttons = [
         [
-            Button.inline("Peringatan", data=f"admin_only{from_user}"),
+            Button.inline("ᴘᴇʀɪɴɢᴀᴛᴀɴ", data=f"admin_only{from_user}"),
             Button.inline(wrns, data=f"don_{wrns}"),
         ]
     ]
@@ -858,7 +858,7 @@ async def edt(event):
     await event.edit(
         buttons=[
             [
-                Button.inline("Peringatan", data=f"admin_only{from_user}"),
+                Button.inline("ᴘᴇʀɪɴɢᴀᴛᴀɴ", data=f"admin_only{from_user}"),
                 Button.inline(wrns, data=f"don_{wrns}"),
             ]
         ],
