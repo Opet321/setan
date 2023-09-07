@@ -132,10 +132,10 @@ async def own(event):
         mention=event.sender.mention, me=inline_mention(ayra_bot.me)
     )
     if custom_info:
-        msg += "\n\n• Powered by **@kynansupport**"
+        msg += "© mengontol"
     await event.edit(
         msg,
-        buttons=[Button.inline("Tutup", data="closeit")],
+        buttons=[Button.inline("ᴛᴜᴛᴜᴘ ᴍᴇɴᴜ", data="closeit")],
         link_preview=False,
     )
 
@@ -178,7 +178,7 @@ async def ayra(event):
             await event.reply(
                 f"Hey {mention}, Aku Adalah Ayra Asissten {me}!\n\n{ok}",
                 file=udB.get_key("STARTMEDIA"),
-                buttons=[Button.inline("Info.", data="ownerinfo")]
+                buttons=[Button.inline("ᴊᴀɴɢᴀɴ ᴅɪ ᴋʟɪᴋ", data="ownerinfo")]
                 if Owner_info_msg
                 else None,
             )
@@ -186,7 +186,7 @@ async def ayra(event):
             await event.reply(
                 udB.get_key("STARTMSG").format(me=me, mention=mention),
                 file=udB.get_key("STARTMEDIA"),
-                buttons=[Button.inline("Info.", data="ownerinfo")]
+                buttons=[Button.inline("ᴊᴀɴɢᴀɴ ᴅɪ ᴋʟɪᴋ", data="ownerinfo")]
                 if Owner_info_msg
                 else None,
             )
