@@ -132,7 +132,7 @@ async def own(event):
         mention=event.sender.mention, me=inline_mention(ayra_bot.me)
     )
     if custom_info:
-        msg += "© mengontol"
+        msg += "\n\n© mengontol"
     await event.edit(
         msg,
         buttons=[Button.inline("ᴛᴜᴛᴜᴘ ᴍᴇɴᴜ", data="closeit")],
