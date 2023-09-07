@@ -355,7 +355,8 @@ if udB.get_key("PMSETTING"):
                         "PMPermit eror, tolong restart bot !!",
                     )
                     return LOGS.info("COUNT_PM is messed.")
-                await ayra_bot(BlockRequest(user.id))
+                await asyncio.sleep(0)
+                await ayra_bot.delete_dialog(user, revoke=True)
                 await ayra_bot(ReportSpamRequest(peer=user.id))
                 await asst.edit_message(
                     int(udB.get_key("LOG_CHANNEL")),
