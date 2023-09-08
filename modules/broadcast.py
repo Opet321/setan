@@ -49,23 +49,21 @@ async def gcast(event):
     err = ""
     chat_blacklist = udB.get_key("GBLACKLISTS")
     async for x in event.client.iter_dialogs():
-    if x.is_group:
-        chat = x.id
-        if chat is not None and chat not in chat_blacklist and chat not in NOSPAM_CHAT:
-            try:
-                await event.client.send_message(chat, msg)
-                done += 1
-            except FloodWaitError as fw:
-                await asyncio.sleep(fw.seconds + 10)
+        if x.is_group:
+            chat = x.id
+            if chat is not None and chat not in chat_blacklist and chat not in NOSPAM_CHAT:
                 try:
                     await event.client.send_message(chat, msg)
                     done += 1
-                except Exception as rr:
-                    err += f"• {rr}\n"
-                    er += 1
-            except BaseException as h:
-                err += f"• {str(h)}" + "\n"
-                er += 1
+                except FloodWaitError as fw:
+                    await asyncio.sleep(fw.seconds + 10)
+                    try:
+                        await event.client.send_message(
+                                chat, msg)
+                        done += 1
+                    except Exception as rr:
+                        err += f"• {rr}\n"
+                        er += 1
                 except BaseException as h:
                     err += f"• {str(h)}" + "\n"
                     er += 1
