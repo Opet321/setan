@@ -34,7 +34,7 @@ piic = "https://graph.org/file/60408fea8439e6702674d.jpg"
 
 buttons = [
     [
-        Button.url(get_string("bot_4"), "t.me/kynansupport"),
+        Button.inline(get_string("help_4"), data="uh_Official_"),
     ]
 ]
 
