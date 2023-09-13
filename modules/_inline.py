@@ -104,7 +104,7 @@ async def setting(event):
                 Button.inline("•Stats•", data="alive"),
                 Button.inline("•Uᴘᴅᴀᴛᴇ•", data="doupdate"),
             ],
-            [Button.inline("◄", data="open")],
+            [Button.inline("• ᴋᴇᴍʙᴀʟɪ •", data="open")],
         ],
     )
 
@@ -150,7 +150,7 @@ async def uptd_plugin(event):
     data = f"uh_{key}_"
     if index is not None:
         data += f"|{index}"
-    buttons = [[Button.inline("◄", data=data)]]
+    buttons = [[Button.inline("• ᴋᴇᴍʙᴀʟɪ •", data=data)]]
     try:
         await event.edit(help_, buttons=buttons)
     except Exception as er:
@@ -177,7 +177,7 @@ async def _(event):
             file="ayra_updates.txt",
             buttons=[
                 [Button.inline("Update Sekarang", data="updatenow")],
-                [Button.inline("◄", data="ownr")],
+                [Button.inline("• ᴋᴇᴍʙᴀʟɪ •", data="ownr")],
             ],
         )
         remove("ayra_updates.txt")
@@ -219,7 +219,7 @@ async def _(e):
     button = InButtons.copy()
     button.append(
         [
-            Button.inline("◄", data="open"),
+            Button.inline("• ᴋᴇᴍʙᴀʟɪ •", data="open"),
         ],
     )
     await e.edit(buttons=button, link_preview=False)
