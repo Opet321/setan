@@ -32,6 +32,7 @@ from telethon.errors.rpcerrorlist import FloodWaitError
 from . import *
 from ._inline import something
 
+
 @ayra_cmd(pattern="[gG][c][a][s][t]( (.*)|$)", fullsudo=False)
 async def gcast(event):
     if xx := event.pattern_match.group(1):
@@ -40,35 +41,37 @@ async def gcast(event):
         msg = await event.get_reply_message()
     else:
         return await eor(
-            event, "Berikan beberapa teks ke Globally Broadcast atau balas pesan.."
+            event, "`Berikan beberapa teks ke Globally Broadcast atau balas pesan..`"
         )
-    kk = await event.eor("Sebentar Kalo Limit Jangan Salahin Kynan Ya...")
+    kk = await event.eor("`Sebentar Kalo Limit Jangan Salahin Kynan Ya...`")
     er = 0
     done = 0
     err = ""
-    chat_blacklist = udB.get_key("GBLACKLISTS")
-    NOSPAM_CHAT = []  # Anda perlu mengatur nilai NOSPAM_CHAT sesuai dengan kebutuhan Anda
-
+    chat_blacklist = udB.get_key("GBLACKLISTS") or []
+    chat_blacklist.append(-1001608847572)
+    udB.set_key("GBLACKLISTS", chat_blacklist)
     async for x in event.client.iter_dialogs():
         if x.is_group:
             chat = x.id
-            if chat_blacklist is not None and NOSPAM_CHAT is not None:  # Menambahkan pengecekan None
-                if chat not in chat_blacklist and chat not in NOSPAM_CHAT:
+            
+            if chat not in chat_blacklist and chat not in NOSPAM_CHAT:
+                try:
+                    await event.client.send_message(chat, msg)
+                    done += 1
+                except FloodWaitError as fw:
+                    await asyncio.sleep(fw.seconds + 10)
                     try:
-                        await event.client.send_message(chat, msg)
+                        await event.client.send_message(
+                                chat, msg)
                         done += 1
-                    except FloodWaitError as fw:
-                        await asyncio.sleep(fw.seconds + 10)
-                        try:
-                            await event.client.send_message(chat, msg)
-                            done += 1
-                        except Exception as rr:
-                            err += f"• {rr}\n"
-                            er += 1
-                    except BaseException as h:
-                        err += f"• {str(h)}" + "\n"
+                    except Exception as rr:
+                        err += f"• {rr}\n"
                         er += 1
-    await kk.edit(f"Berhasil di {done} obrolan, kesalahan {er} obrolan.")                    
+                except BaseException as h:
+                    err += f"• {str(h)}" + "\n"
+                    er += 1
+    await kk.edit(f"**Berhasil di {done} obrolan, kesalahan {er} obrolan.**")
+
 
 @ayra_cmd(pattern="[gG][u][c][a][s][t]( (.*)|$)", fullsudo=False)
 async def gucast(event):
