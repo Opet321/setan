@@ -44,7 +44,7 @@ async def chatgpt(text) -> str:
 
 
 @ayra_cmd(pattern="ai ?(.*)")
-async def chatgpt(event):
+async def openai(event):
     if xx := event.pattern_match.group(1):
         msg = xx
     elif event.is_reply:
