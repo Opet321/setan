@@ -5,7 +5,7 @@
 # PLease read the GNU Affero General Public License in
 # <https://www.github.com/senpai80/Ayra/blob/main/LICENSE/>.
 """
-✘ **Bantuan Untuk Broadcast**
+✘ **Bantuan Untuk Gcast**
 
 ๏ **Perintah:** `gcast`
 ◉ **Keterangan:** Kirim pesan ke semua obrolan grup.
