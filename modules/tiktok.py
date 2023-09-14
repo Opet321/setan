@@ -59,7 +59,7 @@ async def tiktok(event):
             await event.client.send_file(
                 event.chat_id,
                 response.message.media,
-                caption=f"**Upload By: {inline_mention(event.sender)}**",
+                caption=f"**ᴜᴘʟᴏᴀᴅ ʙʏ : {inline_mention(event.sender)}**",
             )
             await event.client.send_read_acknowledge(conv.chat_id)
             await asyncio.sleep(5)
