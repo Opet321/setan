@@ -29,7 +29,7 @@ except ImportError:
 
 from . import *
 
-@ayra_cmd(pattern="(TT|tt)( (.*)|$)")
+@ayra_cmd(pattern="(TT|tt)(?: |$)(.*)")
 async def _(event):
     if xxnx := event.pattern_match.group(1):
         link = xxnx
