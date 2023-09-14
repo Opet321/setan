@@ -10,6 +10,8 @@
 ๏ **Perintah:** `tiktok` <link>
 ◉ **Keterangan:** Unduh tautan tiktak.
 """
+import asyncio
+
 from telethon import events
 from telethon.errors.rpcerrorlist import YouBlockedUserError
 from telethon.tl.functions.contacts import UnblockRequest
@@ -46,7 +48,8 @@ async def tiktok(event):
             )
             await event.client.send_message(chat, link)
             response = await response
-        except YouBlockedUserError:
+        except YouBlockedUserError: 
+            await asyncio.sleep(5)
             await event.client(UnblockRequest(chat))
             await event.client.send_message(chat, link)
             response = await response
