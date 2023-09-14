@@ -29,51 +29,52 @@ except ImportError:
 
 from . import *
 
-@ayra_cmd(pattern="tt(?: |$)(.*)")
-async def _(event):
+@ayra_cmd(pattern="pntrst(?: |$)(.*)")
+async def pntr(event):
     if xxnx := event.pattern_match.group(1):
-        links = xxnx.split()  # Splitting the input into separate links
+        link = xxnx
     elif event.is_reply:
-        links = [await event.get_reply_message()]  # Storing the replied message as a single link
+        link = await event.get_reply_message()
     else:
-        return await eod(event, "Berikan link tautan tiktok...")
+        return await eod(event, "`Berikan link tautan pinterest...`")
 
-    xx = await eor(event, "Processing...")
-    chat = "@downloader_tiktok_bot"
+    xx = await eor(event, "`Processing...`")
+    chat = "@SaveAsbot"
     async with event.client.conversation(chat) as conv:
         try:
-            for link in links:  # Iterating over each link
-                response = conv.wait_event(
-                    events.NewMessage(incoming=True, from_users=1332941342)
-                )
-                await event.client.send_message(chat, link)
-                response = await response
-                if response.text.startswith("Forward"):
-                    await xx.edit("Mengunggah...")
-                else:
-                    await xx.delete()
-                    await event.client.send_file(
-                        event.chat_id,
-                        response.message.media,
-                        caption=f"Upload By: {inline_mention(event.sender)}",
-                    )
-                    await event.client.send_read_acknowledge(conv.chat_id)
-                    await event.client(DeleteHistoryRequest(peer=chat, max_id=0))
-                    await xx.delete()
+            response = conv.wait_event(
+                events.NewMessage(incoming=True, from_users=523131145)
+            )
+            await event.client.send_message(chat, link)
+            response = await response
         except YouBlockedUserError:
             await event.client(UnblockRequest(chat))
-            for link in links:  # Iterating over each link
-                await event.client.send_message(chat, link)
-                response = await response
-                if response.text.startswith("Forward"):
-                    await xx.edit("Mengunggah...")
-                else:
-                    await xx.delete()
-                    await event.client.send_file(
-                        event.chat_id,
-                        response.message.media,
-                        caption=f"Upload By: {inline_mention(event.sender)}",
-                    )
-                    await event.client.send_read_acknowledge(conv.chat_id)
-                    await event.client(DeleteHistoryRequest(peer=chat, max_id=0))
-                    await xx.delete()
+            await event.client.send_message(chat, link)
+            response = await response
+        if response.text.startswith("Forward"):
+            await xx.edit("`Mengunggah...`")
+        else:
+            await xx.delete()
+            await event.client.send_file(
+                event.chat_id,
+                response.message.media,
+                caption=f"**Upload By: {inline_mention(event.sender)}**",   
+            )
+            await event.client.send_message(chat, link)
+            response = await response
+        except YouBlockedUserError:
+            await event.client(UnblockRequest(chat))
+            await event.client.send_message(chat, link)
+            response = await response
+        if response.text.startswith("Forward"):
+            await xx.edit("`Mengunggah...`")
+        else:
+            await xx.delete()
+            await event.client.send_file(
+                event.chat_id,
+                response.message.photo,
+                caption=f"**Upload By: {inline_mention(event.sender)}**",
+            )
+            await event.client.send_read_acknowledge(conv.chat_id)
+            await event.client(DeleteHistoryRequest(peer=chat, max_id=0))
+            await xx.delete()
