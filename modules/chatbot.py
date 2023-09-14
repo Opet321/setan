@@ -61,7 +61,7 @@ async def chatgpt_support(event):
     if rsp:
         await x.edit(rsp)
     else:
-        await x.edit("ChatGPT tidak ada merespon."
+        await x.edit("ChatGPT tidak ada merespon.")
 
     
 
