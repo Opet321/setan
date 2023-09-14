@@ -18,18 +18,58 @@ from . import LOGS, ayra_cmd, eod, inline_mention, udB
 from .database.ai import OpenAi, get_chatbot_reply
 
 
-@ayra_cmd(pattern="ai( (.*)|$)")
-async def openai(event):
-    question = event.pattern_match.group(2)
-    if not question:
-        await event.eor("`Mohon berikan pertanyaan untuk menggunakan AI.`")
-        return
-    msg = await event.eor("`Processing...`")
-    try:
-        response = OpenAi().text(question)
-        await msg.eor(f"**Q:** {question}\n\n**A:** {response}")
-    except Exception as e:
-        await msg.eor(f"**Q:** {question}\n\n**A:** `Error: {e}`")
+from typing import Optional
+
+def get_text(
+    message: Message,
+    save_link: Optional[bool] = None,
+) -> Optional[str]:
+    text_ = (
+        message.raw_text.split(None, 1)[1]
+        if len(
+            message.raw_text.split(),
+        )
+        != 1
+        else None
+    )
+    if message.reply_to_message:
+        text_ = (
+            message.reply_to_message.text
+            or message.reply_to_message.caption
+            or message.reply_to_message.caption_entities
+        )
+
+    if text_ is None:
+        return False
+    else:
+        if save_link:
+            return str(text_)
+        else:
+            return str(text_.lower())
+
+
+    @ayra_cmd(pattern="ai( (.*)|$)")
+    async def ai(event): 
+        pro = await event.edit("Processing.....")
+        biji = event.raw_text.split(" ", 1)[1] if len(event.raw_text.split()) > 1 else None
+        biji = get_text(event)
+        if not biji:
+            await pro.edit("Berikan permintaan dari chatgpt")
+            return
+        try:
+            # Ganti dengan fungsi atau metode yang sesuai untuk mendapatkan respons dari chatbot
+            hacking = get_chatbot_response(biji)
+            await client.send_message(
+                event.chat_id,
+                hacking,
+                reply_to=event.reply_to_msg_id
+            )
+            await pro.delete()
+        except Exception as e:
+            await pro.edit(str(e))
+            return
+
+    client.run_until_disconnected()
 
 
 @ayra_cmd(pattern="img( (.*)|$)")
