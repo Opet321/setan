@@ -43,10 +43,10 @@ async def chatgpt(text) -> str:
     return rsp
 
 
-@ayra_cmd(pattern="ai ?(.*)")
+@ayra_cmd(pattern=r"ai(?: |$)(.*)")
 async def openai(event):
     if event.pattern_match.group(1):
-        msg = event.pattern_match.group(1)
+        msg = event.pattern_match.group(1).strip()
     elif event.is_reply:
         msg = (await event.get_reply_message()).message
     else:
