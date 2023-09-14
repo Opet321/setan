@@ -29,21 +29,21 @@ except ImportError:
 
 from . import *
 
-@ayra_cmd(pattern="pntrst(?: |$)(.*)")
-async def pntr(event):
+@ayra_cmd(pattern="tt(?: |$)(.*)")
+async def _(event):
     if xxnx := event.pattern_match.group(1):
         link = xxnx
     elif event.is_reply:
         link = await event.get_reply_message()
     else:
-        return await eod(event, "`Berikan link tautan pinterest...`")
+        return await eod(event, "`Berikan link tautan tiktok...`")
 
     xx = await eor(event, "`Processing...`")
-    chat = "@SaveAsbot"
+    chat = "@downloader_tiktok_bot"
     async with event.client.conversation(chat) as conv:
         try:
             response = conv.wait_event(
-                events.NewMessage(incoming=True, from_users=523131145)
+                events.NewMessage(incoming=True, from_users=1332941342)
             )
             await event.client.send_message(chat, link)
             response = await response
