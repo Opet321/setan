@@ -5,9 +5,9 @@
 # PLease read the GNU Affero General Public License in
 # <https://www.github.com/senpai80/Ayra/blob/main/LICENSE/>.
 """
-✘ **Bantuan Untuk Sosmed**
+✘ **Bantuan Untuk tiktok**
 
-๏ **Perintah:** `sosmed` <berikan link/balas link>
+๏ **Perintah:** `tiktok` <berikan link/balas link>
 ◉ **Keterangan:** Download Video Facebook, Youtube, Tiktok, Instagram, Twitter.
 """
 
