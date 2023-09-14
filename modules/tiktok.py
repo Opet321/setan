@@ -61,6 +61,12 @@ async def tiktok(event):
                 response.message.media,
                 caption=f"**ᴜᴘʟᴏᴀᴅ ʙʏ : {inline_mention(event.sender)}**",
             )
+            await xx.delete()
+            await event.client.send_file(
+                event.chat_id,
+                response.message.image,
+                caption=f"**ᴜᴘʟᴏᴀᴅ ʙʏ : {inline_mention(event.sender)}**",
+            )
             await event.client.send_read_acknowledge(conv.chat_id)
             await asyncio.sleep(10)
             await event.client(DeleteHistoryRequest(peer=chat, max_id=0))
