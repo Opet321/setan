@@ -57,14 +57,12 @@ async def _(event):
 
 @ayra_cmd(pattern="[Bb][o][k][e][p]$")
 async def _(event):
-    if event.chat_id in NOSPAM_CHAT:
-        return await eor(event, "**Perintah ini Dilarang digunakan di Group ini**")
     xx = await eor(event, "`Tunggu Sebentar...`")
     try:
         bokepnya = [
             bokep
             async for bokep in event.client.iter_messages(
-                "@bahaninimah", filter=InputMessagesFilterVideo
+                "@zaencoli", filter=InputMessagesFilterVideo
             )
         ]
         await event.client.send_file(
