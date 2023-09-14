@@ -19,7 +19,7 @@ import requests
 from . import LOGS, ayra_cmd, eod, inline_mention, udB
 from .database.ai import OpenAi, get_chatbot_reply
 
-def chatgpt(text) -> str:
+async def chatgpt(text) -> str:
     url = "https://api.safone.me/chatgpt"
     payloads = {
         "message": text,
@@ -34,7 +34,7 @@ def chatgpt(text) -> str:
             headers={"Content-Type": "application/json"}
         ).json()
         if not (response and "message" in response):
-            rsp = "ChatGPT tidak ada merespon."
+            rsp = "Invalid Response from Server"
         else:
             rsp = response.get("message")
     except BaseException as excp:
@@ -43,27 +43,25 @@ def chatgpt(text) -> str:
     return rsp
 
 
-@ayra_cmd(pattern=r"(ask|ai)(?: |$)(.*)", fullsudo=False)
-async def chatgpt_support(event):
-    msg = (
-        event.pattern_match.group(1)
-        if event.pattern_match.group(1)
-        else (await event.get_reply_message()).message
-    )
-    if not msg:
+@ayra_cmd(pattern="ai ?(.*)")
+async def ai(event):
+    if xx := event.pattern_match.group(1):
+        msg = xx
+    elif event.is_reply:
+        msg = await event.get_reply_message()
+    else:
         await event.edit(
             "`Mohon berikan permintaan!`"
         )
         return
 
     x = await event.edit("`Memproses...`")
-    rsp = chatgpt(text=msg)
-    try:
-        if rsp:
-            await x.edit(f"{rsp}")
-    except BaseException as excp:
-        await x.edit(f"Error: {excp}")
-    
+    rsp = await chatgpt(msg)
+
+    if rsp:
+        await x.edit(rsp)
+    else:
+        await x.edit("ChatGPT tidak ada merespon."
 
 @ayra_cmd(pattern="img( (.*)|$)")
 async def imge(event):
