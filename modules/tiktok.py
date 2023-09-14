@@ -37,9 +37,9 @@ async def tiktok(event):
     elif event.is_reply:
         link = await event.get_reply_message()
     else:
-        return await eod(event, "`Berikan link tautan tiktok...`")
+        return await eod(event, "Berikan link tautan tiktok...")
 
-    xx = await eor(event, "`Processing...`")
+    xx = await eor(event, "Processing...")
     chat = "@downloader_tiktok_bot"
     async with event.client.conversation(chat) as conv:
         try:
@@ -53,21 +53,14 @@ async def tiktok(event):
             await event.client.send_message(chat, link)
             response = await response
         if response.text.startswith("Forward"):
-            await xx.edit("`Mengunggah...`")
+            await xx.edit("Mengunggah...")
         else:
-            await xx.delete()
+            photo = event.media
             await event.client.send_file(
                 event.chat_id,
-                response.message.media,
-                caption=f"**ᴜᴘʟᴏᴀᴅ ʙʏ : {inline_mention(event.sender)}**",
-            )
-            await xx.delete()
-            await event.client.send_file(
-                event.chat_id,
-                response.message.image,
-                caption=f"**ᴜᴘʟᴏᴀᴅ ʙʏ : {inline_mention(event.sender)}**",
+                photo,
+                caption=f"ᴜᴘʟᴏᴀᴅ ʙʏ : {inline_mention(event.sender)}",
             )
             await event.client.send_read_acknowledge(conv.chat_id)
-            await asyncio.sleep(10)
             await event.client(DeleteHistoryRequest(peer=chat, max_id=0))
             await xx.delete()
