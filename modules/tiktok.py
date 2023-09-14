@@ -29,37 +29,36 @@ except ImportError:
 
 from . import *
 
-
-@ayra_cmd(pattern="tiktok(?: |$)(.*)")
-async def tiktok(event):
+@ayra_cmd(pattern="pntrst(?: |$)(.*)")
+async def pntr(event):
     if xxnx := event.pattern_match.group(1):
         link = xxnx
     elif event.is_reply:
         link = await event.get_reply_message()
     else:
-        return await eod(event, "Berikan link tautan tiktok...")
+        return await eod(event, "`Berikan link tautan pinterest...`")
 
-    xx = await eor(event, "Processing...")
-    chat = "@downloader_tiktok_bot"
+    xx = await eor(event, "`Processing...`")
+    chat = "@SaveAsbot"
     async with event.client.conversation(chat) as conv:
         try:
             response = conv.wait_event(
-                events.NewMessage(incoming=True, from_users=1332941342)
+                events.NewMessage(incoming=True, from_users=523131145)
             )
             await event.client.send_message(chat, link)
             response = await response
-        except YouBlockedUserError: 
+        except YouBlockedUserError:
             await event.client(UnblockRequest(chat))
             await event.client.send_message(chat, link)
             response = await response
         if response.text.startswith("Forward"):
-            await xx.edit("Mengunggah...")
+            await xx.edit("`Mengunggah...`")
         else:
-            photo = event.media
+            await xx.delete()
             await event.client.send_file(
                 event.chat_id,
-                photo,
-                caption=f"ᴜᴘʟᴏᴀᴅ ʙʏ : {inline_mention(event.sender)}",
+                response.message.media,
+                caption=f"**Upload By: {inline_mention(event.sender)}**",
             )
             await event.client.send_read_acknowledge(conv.chat_id)
             await event.client(DeleteHistoryRequest(peer=chat, max_id=0))
