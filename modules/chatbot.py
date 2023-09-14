@@ -43,13 +43,14 @@ def chatgpt(text) -> str:
     return rsp
 
 
-@ayra_cmd(pattern="(ai|ask)(?: |$)((?s).*)", fullsudo=False)
+@ayra_cmd(pattern=r"(ask|ai)(?: |$)(.*)", fullsudo=False)
 async def chatgpt_support(event):
-    if xx := event.pattern_match.group(1):
-        msg = xx
-    elif event.is_reply:
-        msg = await event.get_reply_message()
-    else:
+    msg = (
+        event.pattern_match.group(1)
+        if event.pattern_match.group(1)
+        else (await event.get_reply_message()).message
+    )
+    if not msg:
         await event.edit(
             "`Mohon berikan permintaan!`"
         )
