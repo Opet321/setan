@@ -94,7 +94,7 @@ async def lsnote(e):
     await e.eor("**Belum ada catatan**")
 
 
-@ayra_cmd(pattern="[Gg][e][t]( (.*)|$)")
+@ayra_cmd(pattern="[Gg][e][t]( (.*)|$)",)
 async def notes(e):
     user = e.sender_id
     wrd = (e.pattern_match.group(1).strip()).lower()
