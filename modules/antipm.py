@@ -355,7 +355,8 @@ if udB.get_key("PMSETTING"):
                         "PMPermit eror, tolong restart bot !!",
                     )
                     return LOGS.info("COUNT_PM is messed.")
-                await ayra_bot(BlockRequest(user.id))
+                await asyncio.sleep(0)
+                await ayra_bot.delete_dialog(user, revoke=True)
                 await ayra_bot(ReportSpamRequest(peer=user.id))
                 await asst.edit_message(
                     int(udB.get_key("LOG_CHANNEL")),
@@ -769,7 +770,7 @@ async def in_pm_ans(event):
     wrns = f"{warns}/{WARNS}"
     buttons = [
         [
-            Button.inline("Peringatan", data=f"admin_only{from_user}"),
+            Button.inline("ᴘᴇʀɪɴɢᴀᴛᴀɴ", data=f"admin_only{from_user}"),
             Button.inline(wrns, data=f"don_{wrns}"),
         ]
     ]
@@ -857,7 +858,7 @@ async def edt(event):
     await event.edit(
         buttons=[
             [
-                Button.inline("Peringatan", data=f"admin_only{from_user}"),
+                Button.inline("ᴘᴇʀɪɴɢᴀᴛᴀɴ", data=f"admin_only{from_user}"),
                 Button.inline(wrns, data=f"don_{wrns}"),
             ]
         ],
