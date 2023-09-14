@@ -5,7 +5,7 @@
 # PLease read the GNU Affero General Public License in
 # <https://www.github.com/senpai80/Ayra/blob/main/LICENSE/>.
 """
-✘ **Bantuan Untuk Sangmata**
+✘ **Bantuan Untuk Sangm**
 
 ๏ **Perintah:** `id` <balas pesan/berikan username/none>
 ◉ **Keterangan:** Dapatkan ID
