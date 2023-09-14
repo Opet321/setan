@@ -26,7 +26,7 @@ from telethon.errors.rpcerrorlist import YouBlockedUserError
 from . import *
 
 
-@ayra_cmd(pattern="sosmed(?: |$)(.*)")
+@ayra_cmd(pattern="tt(?: |$)(.*)")
 async def _(event):
     if xxnx := event.pattern_match.group(1):
         d_link = xxnx
@@ -38,7 +38,7 @@ async def _(event):
             "**Berikan Link Pesan atau Reply Link Untuk di Download**",
         )
     xx = await eor(event, "`Processing...`")
-    chat = "@thisvidbot"
+    chat = "@downloader_tiktok_bot"
     async with event.client.conversation(chat) as conv:
         try:
             msg_start = await conv.send_message("/start")
