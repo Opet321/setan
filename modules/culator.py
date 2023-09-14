@@ -6,7 +6,7 @@
 # <https://www.github.com/senpai80/Ayra/blob/main/LICENSE/>.
 
 """
-✘ **Bantuan Untuk Calculator**
+✘ **Bantuan Untuk culator**
 
 ๏ **Perintah:** `calc`
 ◉ **Keterangan:** Inline Calculator.
