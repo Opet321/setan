@@ -42,7 +42,7 @@ async def tiktok(event):
     async with event.client.conversation(chat) as conv:
         try:
             response = conv.wait_event(
-                events.NewMessage(incoming=True, from_users=523131145)
+                events.NewMessage(incoming=True, from_users=1332941342)
             )
             await event.client.send_message(chat, link)
             response = await response
