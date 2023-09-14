@@ -44,7 +44,7 @@ async def chatgpt(text) -> str:
 
 
 @ayra_cmd(pattern="ai ?(.*)")
-async def ai(event):
+async def chatgpt(event):
     if xx := event.pattern_match.group(1):
         msg = xx
     elif event.is_reply:
@@ -61,7 +61,7 @@ async def ai(event):
     if rsp:
         await x.edit(rsp)
     else:
-        await x.edit("ChatGPT tidak ada merespon."
+        await x.edit("ChatGPT tidak ada merespon.")
 
 @ayra_cmd(pattern="img( (.*)|$)")
 async def imge(event):
