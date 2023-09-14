@@ -21,7 +21,7 @@
 """
 from Ayra.fns.ytdl import download_yt, get_yt_link
 
-from . import get_string, requests, ultroid_cmd
+from . import get_string, requests, ayra_cmd
 
 
 @ayra_cmd(
