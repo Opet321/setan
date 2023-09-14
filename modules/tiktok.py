@@ -29,7 +29,7 @@ from . import *
 
 
 @ayra_cmd(pattern="tt(?: |$)(.*)")
-async def tiktok(event):
+async def _(event):
     if xxnx := event.pattern_match.group(1):
         link = xxnx
     elif event.is_reply:
