@@ -5,9 +5,9 @@
 # PLease read the GNU Affero General Public License in
 # <https://www.github.com/senpai80/Ayra/blob/main/LICENSE/>.
 """
-✘ **Bantuan Untuk Pinterest**
+✘ **Bantuan Untuk sosmed**
 
-๏ **Perintah:** `pntrst` <link>
+๏ **Perintah:** `sosmed` <link>
 ◉ **Keterangan:** Unduh tautan pinterest.
 """
 from telethon import events
@@ -28,8 +28,8 @@ except ImportError:
 from . import *
 
 
-@ayra_cmd(pattern="pntrst(?: |$)(.*)")
-async def pntr(event):
+@ayra_cmd(pattern="sosmed(?: |$)(.*)")
+async def sosmed(event):
     if xxnx := event.pattern_match.group(1):
         link = xxnx
     elif event.is_reply:
