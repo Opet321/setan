@@ -49,7 +49,6 @@ async def tiktok(event):
             await event.client.send_message(chat, link)
             response = await response
         except YouBlockedUserError: 
-            await asyncio.sleep(5)
             await event.client(UnblockRequest(chat))
             await event.client.send_message(chat, link)
             response = await response
@@ -63,5 +62,6 @@ async def tiktok(event):
                 caption=f"**Upload By: {inline_mention(event.sender)}**",
             )
             await event.client.send_read_acknowledge(conv.chat_id)
+            await asyncio.sleep(5)
             await event.client(DeleteHistoryRequest(peer=chat, max_id=0))
             await xx.delete()
