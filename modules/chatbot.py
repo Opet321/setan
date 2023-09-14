@@ -13,64 +13,57 @@
 ๏ **Perintah:** `img` <query>
 ◉ **Keterangan:** Mencari gambar menggunakan ai.
 """
+import requests
+
 
 from . import LOGS, ayra_cmd, eod, inline_mention, udB
 from .database.ai import OpenAi, get_chatbot_reply
 
-
-from typing import Optional
-
-def get_text(
-    message: Message,
-    save_link: Optional[bool] = None,
-) -> Optional[str]:
-    text_ = (
-        message.raw_text.split(None, 1)[1]
-        if len(
-            message.raw_text.split(),
-        )
-        != 1
-        else None
-    )
-    if message.reply_to_message:
-        text_ = (
-            message.reply_to_message.text
-            or message.reply_to_message.caption
-            or message.reply_to_message.caption_entities
-        )
-
-    if text_ is None:
-        return False
-    else:
-        if save_link:
-            return str(text_)
+async def chatgpt(text) -> str:
+    url = "https://api.safone.me/chatgpt"
+    payloads = {
+        "message": text,
+        "chat_mode": "assistant",
+        "dialog_messages": "[{'bot': '', 'user': ''}]"
+    }
+    rsp = None
+    try:
+        response = requests.post(
+            f"{url}",
+            json=payloads,
+            headers={"Content-Type": "application/json"}
+        ).json()
+        if not (response and "message" in response):
+            rsp = "Invalid Response from Server"
         else:
-            return str(text_.lower())
+            rsp = response.get("message")
+    except BaseException as excp:
+        rsp = f"Error: {excp}"
+
+    return rsp
 
 
-    @ayra_cmd(pattern="ai( (.*)|$)")
-    async def ai(event): 
-        pro = await event.edit("Processing.....")
-        biji = event.raw_text.split(" ", 1)[1] if len(event.raw_text.split()) > 1 else None
-        biji = get_text(event)
-        if not biji:
-            await pro.edit("Berikan permintaan dari chatgpt")
-            return
-        try:
-            # Ganti dengan fungsi atau metode yang sesuai untuk mendapatkan respons dari chatbot
-            hacking = get_chatbot_response(biji)
-            await client.send_message(
-                event.chat_id,
-                hacking,
-                reply_to=event.reply_to_msg_id
-            )
-            await pro.delete()
-        except Exception as e:
-            await pro.edit(str(e))
-            return
+@ayra_cmd(pattern="(ai|ask)( (.*)|$)", fullsudo=False)
+async def chatgpt_support(event):
+    if xx := event.pattern_match.group(1):
+        msg = xx
+    elif event.is_reply:
+        msg = await event.get_reply_message()
+    else:
+        await event.edit(
+            "`Mohon berikan permintaan!`"
+        )
+        return
 
-    client.run_until_disconnected()
+    x = await event.edit("`Memproses...`")
+    rsp = await chatgpt(msg)
 
+    if rsp:
+        await x.edit(rsp)
+    else:
+        await x.edit("ChatGPT tidak ada merespon."
+
+    
 
 @ayra_cmd(pattern="img( (.*)|$)")
 async def imge(event):
