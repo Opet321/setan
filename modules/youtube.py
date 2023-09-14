@@ -19,12 +19,12 @@
 • `{i}ytsv <(youtube) search query>`
    Search and download video from youtube.
 """
-from pyUltroid.fns.ytdl import download_yt, get_yt_link
+from Ayra.fns.ytdl import download_yt, get_yt_link
 
 from . import get_string, requests, ultroid_cmd
 
 
-@ultroid_cmd(
+@ayra_cmd(
     pattern="yt(a|v|sa|sv) ?(.*)",
 )
 async def download_from_youtube_(event):
