@@ -35,7 +35,7 @@ async def sosmed(event):
     elif event.is_reply:
         link = await event.get_reply_message()
     else:
-        return await eod(event, "`Berikan link tautan pinterest...`")
+        return await eod(event, "`Berikan link tautan sosmed...`")
 
     xx = await eor(event, "`Processing...`")
     chat = "@SaveAsbot"
