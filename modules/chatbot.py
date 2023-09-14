@@ -43,7 +43,7 @@ async def chatgpt(text) -> str:
     return rsp
 
 
-@ayra_cmd(pattern="(ai|ask)( (.*)|$)", fullsudo=False)
+@ayra_cmd(pattern="(ai|ask)( (.*)|$)")
 async def chatgpt_support(event):
     if xx := event.pattern_match.group(1):
         msg = xx
