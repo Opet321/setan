@@ -58,7 +58,7 @@ async def tiktok(event):
             await xx.delete()
             await event.client.send_file(
                 event.chat_id,
-                response.message.media.image,
+                response.message.media,
                 caption=f"**ᴜᴘʟᴏᴀᴅ ʙʏ : {inline_mention(event.sender)}**",
             )
             await event.client.send_read_acknowledge(conv.chat_id)
