@@ -28,7 +28,7 @@ except ImportError:
 from . import *
 
 
-@ayra_cmd(pattern="[Ss]Ss](?: |$)(.*)",)
+@ayra_cmd(pattern="[Ss][o][s][m][e][d](?: |$)(.*)",)
 async def _(event):
     if xxnx := event.pattern_match.group(1):
         link = xxnx
