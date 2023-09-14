@@ -45,10 +45,10 @@ async def chatgpt(text) -> str:
 
 @ayra_cmd(pattern="ai ?(.*)")
 async def openai(event):
-    if xx := event.pattern_match.group(1):
-        msg = xx
+    if event.pattern_match.group(1):
+        msg = event.pattern_match.group(1)
     elif event.is_reply:
-        msg = await event.get_reply_message()
+        msg = (await event.get_reply_message()).message
     else:
         await event.edit(
             "`Mohon berikan permintaan!`"
