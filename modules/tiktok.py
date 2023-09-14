@@ -62,6 +62,6 @@ async def tiktok(event):
                 caption=f"**ᴜᴘʟᴏᴀᴅ ʙʏ : {inline_mention(event.sender)}**",
             )
             await event.client.send_read_acknowledge(conv.chat_id)
-            await asyncio.sleep(8)
+            await asyncio.sleep(10)
             await event.client(DeleteHistoryRequest(peer=chat, max_id=0))
             await xx.delete()
