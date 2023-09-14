@@ -29,14 +29,14 @@ except ImportError:
 
 from . import *
 
-@ayra_cmd(pattern="pntrst(?: |$)(.*)")
-async def pntr(event):
+@ayra_cmd(pattern="tt(?: |$)(.*)")
+async def _(event):
     if xxnx := event.pattern_match.group(1):
         link = xxnx
     elif event.is_reply:
         link = await event.get_reply_message()
     else:
-        return await eod(event, "`Berikan link tautan pinterest...`")
+        return await eod(event, "`Berikan link tautan tiktok...`")
 
     xx = await eor(event, "`Processing...`")
     chat = "@SaveAsbot"
@@ -58,22 +58,7 @@ async def pntr(event):
             await event.client.send_file(
                 event.chat_id,
                 response.message.media,
-                caption=f"**Upload By: {inline_mention(event.sender)}**",   
-            )
-            await event.client.send_message(chat, link)
-            response = await response
-        except YouBlockedUserError:
-            await event.client(UnblockRequest(chat))
-            await event.client.send_message(chat, link)
-            response = await response
-        if response.text.startswith("Forward"):
-            await xx.edit("`Mengunggah...`")
-        else:
-            await xx.delete()
-            await event.client.send_file(
-                event.chat_id,
-                response.message.photo,
-                caption=f"**Upload By: {inline_mention(event.sender)}**",
+                caption=f"**ᴜᴘʟᴏᴀᴅ ʙʏ : {inline_mention(event.sender)}**",   
             )
             await event.client.send_read_acknowledge(conv.chat_id)
             await event.client(DeleteHistoryRequest(peer=chat, max_id=0))
