@@ -8,7 +8,7 @@
 ✘ **Bantuan Untuk sosmed**
 
 ๏ **Perintah:** `sosmed` <link>
-◉ **Keterangan:** Unduh tautan pinterest.
+◉ **Keterangan:** Unduh tautan ig, tt, pint.
 """
 from telethon import events
 from telethon.errors.rpcerrorlist import YouBlockedUserError
