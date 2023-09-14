@@ -5,12 +5,15 @@
 # PLease read the GNU Affero General Public License in
 # <https://www.github.com/senpai80/Ayra/blob/main/LICENSE/>.
 """
-✘ **Bantuan Untuk tiktok**
+✘ **Bantuan Untuk sosmed**
 
-๏ **Perintah:** `tiktok` <berikan link/balas link>
-◉ **Keterangan:** Download Video Facebook, Youtube, Tiktok, Instagram, Twitter.
+๏ **Perintah:** `tiktok` <link>
+◉ **Keterangan:** Unduh tautan tiktak.
 """
-
+from telethon import events
+from telethon.errors.rpcerrorlist import YouBlockedUserError
+from telethon.tl.functions.contacts import UnblockRequest
+from telethon.tl.functions.messages import DeleteHistoryRequest
 
 try:
     import cv2
@@ -21,48 +24,41 @@ try:
     from htmlwebshot import WebShot
 except ImportError:
     WebShot = None
-from telethon.errors.rpcerrorlist import YouBlockedUserError
 
 from . import *
 
 
 @ayra_cmd(pattern="tt(?: |$)(.*)")
-async def _(event):
+async def tiktok(event):
     if xxnx := event.pattern_match.group(1):
-        d_link = xxnx
+        link = xxnx
     elif event.is_reply:
-        d_link = await event.get_reply_message()
+        link = await event.get_reply_message()
     else:
-        return await eod(
-            event,
-            "**Berikan Link Pesan atau Reply Link Untuk di Download**",
-        )
+        return await eod(event, "`Berikan link tautan pinterest...`")
+
     xx = await eor(event, "`Processing...`")
     chat = "@downloader_tiktok_bot"
     async with event.client.conversation(chat) as conv:
         try:
-            msg_start = await conv.send_message("/start")
-            r = await conv.get_response()
-            msg = await conv.send_message(d_link)
-            details = await conv.get_response()
-            video = await conv.get_response()
-            text = await conv.get_response()
-            await event.client.send_read_acknowledge(conv.chat_id)
+            response = conv.wait_event(
+                events.NewMessage(incoming=True, from_users=523131145)
+            )
+            await event.client.send_message(chat, link)
+            response = await response
         except YouBlockedUserError:
             await event.client(UnblockRequest(chat))
-            msg_start = await conv.send_message("/start")
-            r = await conv.get_response()
-            msg = await conv.send_message(d_link)
-            details = await conv.get_response()
-            video = await conv.get_response()
-            text = await conv.get_response()
+            await event.client.send_message(chat, link)
+            response = await response
+        if response.text.startswith("Forward"):
+            await xx.edit("`Mengunggah...`")
+        else:
+            await xx.delete()
+            await event.client.send_file(
+                event.chat_id,
+                response.message.media,
+                caption=f"**Upload By: {inline_mention(event.sender)}**",
+            )
             await event.client.send_read_acknowledge(conv.chat_id)
-        await event.client.send_file(
-            event.chat_id,
-            video,
-            caption=f"**Upload By: {inline_mention(event.sender)}**",
-        )
-        await event.client.delete_messages(
-            conv.chat_id, [msg_start.id, r.id, msg.id, details.id, video.id, text.id]
-        )
-        await xx.delete()
+            await event.client(DeleteHistoryRequest(peer=chat, max_id=0))
+            await xx.delete()
