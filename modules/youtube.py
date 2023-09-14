@@ -100,7 +100,7 @@ async def yt_audio(e):
         {
             "quiet": True,
             "no_warnings": True,
-            "format": "bestaudio[ext=m4a]",
+            "format": "bestaudio[ext=mp3]",
             "outtmpl": "downloads/%(id)s.%(ext)s",
             "nocheckcertificate": True,
             "geo_bypass": True,
