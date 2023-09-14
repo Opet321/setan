@@ -28,14 +28,14 @@ except ImportError:
 from . import *
 
 
-@ayra_cmd(pattern="tt(?: |$)(.*)")
-async def _(event):
+@ayra_cmd(pattern="tiktok(?: |$)(.*)")
+async def tiktok(event):
     if xxnx := event.pattern_match.group(1):
         link = xxnx
     elif event.is_reply:
         link = await event.get_reply_message()
     else:
-        return await eod(event, "`Berikan link tautan pinterest...`")
+        return await eod(event, "`Berikan link tautan tiktok...`")
 
     xx = await eor(event, "`Processing...`")
     chat = "@downloader_tiktok_bot"
