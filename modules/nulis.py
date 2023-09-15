@@ -15,6 +15,7 @@ import requests
 from telethon.errors import ChatSendMediaForbiddenError
 
 from . import *
+from . import ayra_cmd
 
 
 @ayra_cmd(pattern=r"nulis(?: |$)(.*)")
