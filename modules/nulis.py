@@ -17,8 +17,8 @@ from telethon.errors import ChatSendMediaForbiddenError
 from . import *
 
 
-@ayra_cmd(pattern=r"(N|n)ulis( (.*)|$)")
-async def handwrite(event):
+@ayra_cmd(pattern=r"nulis(?: |$)(.*)")
+async def nulis(event):
     reply_msg = await event.get_reply_message()
     text = reply_msg.text if reply_msg else event.pattern_match.group(3)
     m = await event.reply("`Processing...`")
