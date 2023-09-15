@@ -95,7 +95,7 @@ async def lsnote(e):
 
 
 @ayra_cmd(pattern="get(?: |$)(.*)")
-async def notis(e):
+async def notes(e):
     user = e.sender_id
     wrd = (e.pattern_match.group(1).strip()).lower()
     if k := get_notes(user, wrd):
