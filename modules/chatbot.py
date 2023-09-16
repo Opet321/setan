@@ -20,7 +20,7 @@ from . import LOGS, ayra_cmd, eod, inline_mention, udB
 from .database.ai import OpenAi, get_chatbot_reply
 
 async def chatgpt(text) -> str:
-    url = "https://api.safone.me/chatgpt"
+    url = "https://api.randydev.my.id/"
     payloads = {
         "message": text,
         "chat_mode": "assistant",
